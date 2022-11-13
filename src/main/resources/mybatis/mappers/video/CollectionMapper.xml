@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lingyi.RootGet.mapper.video.CollectionMapper">
+    <select id="selectAll" resultType="map">
+        SELECT `name`, list
+        FROM collection;
+    </select>
+    <!--    表中是否存在数据-->
+    <select id="isExists" parameterType="string" resultType="boolean">
+        SELECT IFNULL((SELECT TRUE FROM collection WHERE name = #{name} LIMIT 1),FALSE);
+    </select>
+    <!--    添加多个-->
+    <insert id="addCollections" parameterType="map">
+        <foreach collection="list" item="item" index="key" separator=";">
+            INSERT INTO collection(name,list)
+            VALUES (#{key},#{item})
+        </foreach>
+    </insert>
+    <!--    更新多个-->
+    <update id="updateCollections" parameterType="map">
+        <foreach collection="list" item="item" index="key" separator=";">
+            UPDATE collection
+            SET list = #{item}
+            WHERE `name` = #{key}
+        </foreach>
+    </update>
+    <delete id="delete" parameterType="list">
+        DELETE FROM collection WHERE name =
+        <foreach collection="list" item="item" separator="AND ">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

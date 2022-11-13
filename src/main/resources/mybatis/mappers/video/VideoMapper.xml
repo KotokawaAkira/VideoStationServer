@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lingyi.RootGet.mapper.video.VideoMapper">
+    <select id="selectAll" resultType="com.lingyi.RootGet.entry.Video">
+        SELECT id, title, summary, time, up, `like`, collection,upName,play
+        FROM video
+    </select>
+    <!--    表中是否存在数据-->
+    <select id="isExists" parameterType="string" resultType="boolean">
+        SELECT IFNULL((SELECT TRUE FROM video WHERE id = #{id} LIMIT 1),FALSE);
+    </select>
+    <!--    查询一个-->
+    <select id="selectOneById" parameterType="string" resultType="com.lingyi.RootGet.entry.Video">
+        SELECT id, title, summary, time, up, `like`, collection,upName,play
+        FROM video
+        WHERE id = #{id};
+    </select>
+    <!--    关键词搜索-->
+    <select id="selectByKeywords" parameterType="string" resultType="com.lingyi.RootGet.entry.Video">
+        SELECT id, title, summary, time, up, `like`, collection,upName,play
+        FROM video
+        WHERE title like CONCAT('%', #{title}, '%');
+    </select>
+    <!--    关键词搜索-->
+    <select id="selectByUp" parameterType="long" resultType="com.lingyi.RootGet.entry.Video">
+        SELECT id, title, summary, time, up, `like`, collection,upName,play
+        FROM video
+        WHERE up = #{up};
+    </select>
+    <!--    添加一个-->
+    <insert id="addOne" parameterType="com.lingyi.RootGet.entry.Video">
+        INSERT INTO video (id, title, summary, up,upName,collection,play)
+        VALUES (#{id}, #{title}, #{summary}, #{up},#{upName},#{collection},#{play});
+    </insert>
+    <!--    添加多个-->
+    <insert id="addVideos" parameterType="list">
+        <foreach collection="list" item="item" separator=";">
+            INSERT INTO video(id, title, summary, up,upName,collection,play)
+            VALUES (#{item.id}, #{item.title}, #{item.summary}, #{item.up},#{item.collection},#{item.play})
+        </foreach>
+    </insert>
+    <!--    更新一个-->
+    <update id="updateOne" parameterType="com.lingyi.RootGet.entry.Video">
+        UPDATE video
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="summary != null">
+                summary = #{summary},
+            </if>
+            <if test="up != null">
+                up = #{up},
+            </if>
+                `like` = #{like},
+                collection = #{collection},
+                play = #{play}
+        </set>
+        WHERE id = #{id}
+    </update>
+    <!--    更新多个-->
+    <update id="updateVideos" parameterType="list">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE video
+            <set>
+                <if test="item.title != null">
+                    title = #{item.title},
+                </if>
+                <if test="item.summary != null">
+                    summary = #{item.summary},
+                </if>
+                <if test="item.up != null">
+                    up = #{item.up},
+                </if>
+                    `like` = #{item.like},
+                    collection = #{item.collection},
+                    play = #{item.play}
+            </set>
+            WHERE id = #{item.id}
+        </foreach>
+    </update>
+    <delete id="deleteOne" parameterType="string">
+        DELETE FROM video WHERE id = #{id};
+    </delete>
+    <update id="updateUpName" parameterType="string">
+        UPDATE video SET upName = #{newName} WHERE upName = #{oldName};
+    </update>
+</mapper>

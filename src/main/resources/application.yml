@@ -1,0 +1,30 @@
+server:
+  servlet:
+    context-path: 
+  port: 
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: -1
+  datasource:
+    web:
+      url: 
+      username: 
+      password: 
+      driver-class-name: 
+    video:
+      url: 
+      username: 
+      password: 
+      driver-class-name: 
+
+  redis:
+    host: 
+    port: 
+    password: 
+
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lingyi.RootGet.mapper.video.CommentMapper">
+    <select id="getCommentsById" parameterType="string" resultType="com.lingyi.RootGet.entry.Comment">
+        SELECT id,text,time,time_long,userName,uid,`like`,forId FROM comment WHERE id = #{id};
+    </select>
+    <select id="getCommentsByForId" parameterType="object" resultType="com.lingyi.RootGet.entry.Comment">
+        SELECT id,text,time,time_long,userName,uid,`like`,forId FROM comment WHERE forId = #{forId} ORDER BY `like` DESC,time DESC ;
+    </select>
+    <insert id="addComment" parameterType="com.lingyi.RootGet.entry.Comment">
+        INSERT INTO comment (text,userName,uid,forId) VALUES (#{text},#{userName},#{uid},#{forId});
+    </insert>
+    <delete id="deleteComment" parameterType="com.lingyi.RootGet.entry.Comment">
+        DELETE FROM comment WHERE id = #{id};
+    </delete>
+    <update id="updateName" parameterType="string">
+        UPDATE comment SET userName = #{newName} WHERE userName = #{oldName};
+    </update>
+</mapper>

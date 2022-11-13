@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lingyi.RootGet.mapper.video.AccountMapper">
+    <!--    查一个-->
+    <select id="selectOneById" parameterType="long" resultType="com.lingyi.RootGet.entry.Account">
+        SELECT id, name, password, createTime, banned
+        FROM account
+        WHERE id = #{id};
+    </select>
+    <!--    关键字查找-->
+    <select id="selectByKeywords" parameterType="string" resultType="com.lingyi.RootGet.entry.Account">
+        SELECT id, name, password, createTime, banned
+        FROM account
+        WHERE name like CONCAT('%', #{name}, '%');
+    </select>
+    <!--    添加一个-->
+    <insert id="addOne" parameterType="com.lingyi.RootGet.entry.Account" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO account (name, password)
+        VALUES (#{name}, #{password});
+    </insert>
+    <!--    更新一个-->
+    <update id="updateOne" parameterType="com.lingyi.RootGet.entry.Account">
+        UPDATE account
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            banned = #{banned}
+        </set>
+        WHERE id = #{id};
+    </update>
+</mapper>
