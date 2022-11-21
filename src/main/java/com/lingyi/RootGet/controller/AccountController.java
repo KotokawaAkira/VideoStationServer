@@ -116,7 +116,7 @@ public class AccountController {
 
     @PostMapping("/upLoadProfile/{uid}")
     public String upload(@PathVariable("uid") String uid, @RequestParam("file") MultipartFile multipartFile) {
-        File root = new File("/opt/Server/videoStation/profile/" + uid);
+        File root = new File("此处放头像" + uid);
         if (!root.exists()) root.mkdirs();
         File profile = new File(root.getAbsolutePath() + "/profile.file");
         if (profile.exists())
@@ -132,7 +132,7 @@ public class AccountController {
 
     @GetMapping("/getProfile/{uid}")
     public void profile(@PathVariable("uid") String uid, HttpServletResponse response) {
-        File profile = new File("/opt/Server/videoStation/profile/" + uid + "/profile.file");
+        File profile = new File("头像文件夹" + uid + "/profile.file");
         if (!profile.exists()) {
             response.setStatus(404);
             return;

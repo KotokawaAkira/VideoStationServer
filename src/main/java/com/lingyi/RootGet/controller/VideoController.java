@@ -40,7 +40,7 @@ public class VideoController {
         StringRedisTemplate redisTemplate = redisTools.getRedisTemplate();
         Boolean hasKey = redisTemplate.hasKey("VideoStation:Video:" + id);
         if (!hasKey) return null;
-        File root = new File("/opt/Server/videoStation/video/" + id);
+        File root = new File("视频保存文件夹" + id);
         File[] files = root.listFiles();
         if (files == null || files.length == 0) return null;
         List<String> fileList = new ArrayList<>();
@@ -64,7 +64,7 @@ public class VideoController {
             }
         }
         //文件位置
-        File file = new File("/opt/Server/videoStation/video/" + id + "/" + filename);
+        File file = new File("视频保存文件夹" + id + "/" + filename);
         if (!file.exists()) {
             return Constant.FileNotExists;
         }
@@ -178,7 +178,7 @@ public class VideoController {
 
     @PostMapping("/video/uploadVideoImg/{id}")
     public String uploadVideoImg(@PathVariable("id") long id, @RequestPart("videoImg") MultipartFile multipartFile) {
-        File videoImg = new File("/opt/Server/videoStation/videoImg/" + id);
+        File videoImg = new File("视频封面文件夹" + id);
         if (!videoImg.getParentFile().exists()) videoImg.getParentFile().mkdirs();
         if (videoImg.exists()) videoImg.delete();
         try {
@@ -191,7 +191,7 @@ public class VideoController {
     //上传视频文件保存
     @PostMapping("/video/uploadVideo/{id}")
     public String uploadVideo(@PathVariable("id") long id, @RequestPart("video") MultipartFile multipartFile) {
-        File videoFile = new File("/opt/Server/videoStation/video/" + id + "/" + multipartFile.getOriginalFilename());
+        File videoFile = new File("视频封面文件夹" + id + "/" + multipartFile.getOriginalFilename());
         if (!videoFile.getParentFile().exists()) videoFile.getParentFile().mkdirs();
         if (videoFile.exists()) videoFile.delete();
         try {
@@ -212,9 +212,9 @@ public class VideoController {
         if (video.getUp() != Long.parseLong(uid)) return Constant.NoPermission;
         redisTools.getRedisTemplate().delete("VideoStation:Video:" + id);
         videoMapper.deleteOne(id);
-        File videoImg = new File("/opt/Server/videoStation/videoImg/" + id);
+        File videoImg = new File("视频封面文件夹" + id);
         if (videoImg.exists()) videoImg.delete();
-        File videoFile = new File("/opt/Server/videoStation/video/" + id);
+        File videoFile = new File("视频文件夹" + id);
         if (videoFile.exists()) {
             File[] files = videoFile.listFiles();
             if (files != null) {
